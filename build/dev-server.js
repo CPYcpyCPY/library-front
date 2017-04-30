@@ -41,7 +41,7 @@ compiler.plugin('compilation', function (compilation) {
   })
 })
 
-// proxy api requests
+// proxy common requests
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]
   if (typeof options === 'string') {

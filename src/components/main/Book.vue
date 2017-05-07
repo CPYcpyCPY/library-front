@@ -57,8 +57,8 @@
         border-radius: 10px
         img
           width: 100%
+          height: 350px
           border-radius: 10px
-          height: 16rem
       [id*='info']
         display: flex
         [class*='book']

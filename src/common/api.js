@@ -4,15 +4,15 @@ import axios from 'axios'
 let prefix = config.url + ':' + config.port + '/api'
 
 export default {
-  signIn (username, password) {
+  signIn (number, password) {
     return axios.post(prefix + '/signIn', {
-      username: username,
+      number: number,
       password: password
     })
   },
-  signUp (username, password) {
+  signUp (number, password) {
     return axios.post(prefix + '/signUp', {
-      username: username,
+      number: number,
       password: password
     })
   },
@@ -20,11 +20,11 @@ export default {
     return axios.get(prefix + '/books')
   },
   book (id) {
-    console.log(id);
     return axios.get(prefix + '/book', {
       params: {
         id: id
       }
     })
-  }
+  },
+  download: prefix + '/file'
 }

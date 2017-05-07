@@ -7,8 +7,8 @@
         el-tab-pane(label='登录', name='signIn') 登录
         el-tab-pane(label='注册', name='signUp') 注册
       el-form(:label-position='labelPosition', label-width='80px', :model='formData')
-        el-form-item(label='用户名')
-          el-input.input(v-model='formData.username')
+        el-form-item(label='编号')
+          el-input.input(v-model='formData.number')
         el-form-item(label='密码')
           el-input.input(v-model='formData.password' type='password')
         el-form-item(v-if="type == 'signUp'" label='确认密码')
@@ -28,7 +28,7 @@
         type: 'signIn',
         labelPosition: 'right',
         formData: {
-          username: '',
+          number: '',
           password: '',
           repeat: ''
         },
@@ -36,30 +36,41 @@
       }
     },
     mounted () {
-      new Particle(document.getElementById('canvas-wrapper'))
+      new Particle(document.getElementById('canvas-wrapper'));
     },
     methods: {
       handleClick (tab, event) {
+        this.clear();
+      },
+      clear() {
         this.err = ''
-        this.formData.username = ''
+        this.formData.number = ''
         this.formData.password = ''
       },
       submit () {
-        let username = this.formData.username
+        let number = this.formData.number
         let password = this.formData.password
-        if (!username) {
-          this.err = '用户名不能为空'
+        if (!number) {
+          this.err = '编号不能为空'
         } else if (!password) {
           this.err = '密码不能为空'
-        } else if (this.type === 'signIn') {
-          api.signIn(username, password).then((res) => {
-            console.log(res)
+        } else if (this.type == 'signIn') {
+          api.signIn(number, password).then((res) => {
+            if(res.data.err) {
+              this.err = res.data.err;
+            } else {
+              this.$router.push({name: 'Main'});
+            }
           })
         } else if (password !== this.formData.repeat) {
           this.err = '两次密码不一致'
         } else {
-          api.signUp(username, password).then((res) => {
-            console.log(res)
+          api.signUp(number, password).then((res) => {
+            this.clear();
+            this.$message({
+              type: 'info',
+              message: '注册成功'
+            })
           })
         }
       }

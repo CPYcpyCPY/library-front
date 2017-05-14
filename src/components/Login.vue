@@ -46,6 +46,7 @@
         this.err = ''
         this.formData.number = ''
         this.formData.password = ''
+        this.formData.repeat = ''
       },
       submit () {
         let number = this.formData.number
@@ -55,7 +56,7 @@
         } else if (!password) {
           this.err = '密码不能为空'
         } else if (this.type == 'signIn') {
-          api.signIn(number, password).then((res) => {
+          api.signIn(number, password).done((res) => {
             if(res.err) this.err = res.err;
             else this.$router.push({
               path: '/'
@@ -64,12 +65,13 @@
         } else if (password !== this.formData.repeat) {
           this.err = '两次密码不一致'
         } else {
-          api.signUp(number, password).then(() => {
+          api.signUp(number, password).done(() => {
             this.clear();
             this.$message({
               type: 'info',
               message: '注册成功'
             })
+            
           })
         }
       }

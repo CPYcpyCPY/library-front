@@ -39,7 +39,6 @@ export default new Router({
         {path: 'manage', component: Manage},
         {path: 'auth', component: Auth},
         {path: 'blacklist', component: BlackList},
-        {path: '', redirect: 'manage'}
       ]
     }
   ]

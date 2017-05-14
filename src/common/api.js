@@ -31,7 +31,7 @@ export default {
     })
   },
   signUp (number, password) {
-    return request('post', prefix + 'signUp', {
+    return request('post', prefix + '/signUp', {
       number: number,
       password: password
     })

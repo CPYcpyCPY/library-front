@@ -20,14 +20,21 @@
 </template>
 
 <script>
+  import api from '../../common/api-admin'
   require('../../common/DataTable/jquery-3.2.1.min.js')
-  require('../../common/DataTable/jquery.dataTables.min.js')
   export default {
     name: 'admin',
     data () {
       return {  
         admin: '管理员'
       }
+    },
+    beforeCreate() {
+      api.isLogin().done((res) => {
+         this.$router.push({
+          path: res.msg ? '/admin/manage': '/admin/login' 
+        })
+      })
     },
     methods: {
       signOut () {
@@ -36,9 +43,14 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '退出成功!'
+          api.logout().done(() => {
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            })
+            this.$router.push({
+              path: '/'
+            })
           })
         }).catch(() => {
           this.$message({
@@ -52,7 +64,6 @@
 </script>
 
 <style scoped lang="sass">
-@import '../../common/DataTable/jquery.dataTables.min.css'
 #admin
   display: flex
   height: 100%

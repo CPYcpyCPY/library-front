@@ -52,9 +52,9 @@
           this.err = '密码不能为空'
         } else if (this.type == 'signIn') {
           api.signIn(number, password).then((res) => {
-            if(res.data.err) this.err = res.data.err;
+            if(res.err) this.err = res.err;
             else this.$router.push({
-              path: '/admin'
+              path: '/admin/manage'
             });
           })
         } else {

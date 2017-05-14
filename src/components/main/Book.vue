@@ -1,7 +1,7 @@
 <template lang="jade">
   div#books
     div.book-row(v-for='book in books')
-      div.book(v-for="b in book", @click='bookDetail(b.id)')
+      div.book(v-for="b in book", @click='bookDetail(b.number)')
         img(:src="require('../../assets/' + b.picture)")
         div#info1
           div.book-name
@@ -27,18 +27,18 @@
       }
     },
     methods: {
-      bookDetail(id) {
+      bookDetail(number) {
         this.$router.push({
           path: '/main/detail',
           query: {
-            id: id
+            number: number
           }
         });
       }
     },
     created () {
-      api.books().then((res) => {
-        this.books = tool.toNArray(res.data.concat(res.data), 3)
+      api.books(2).then((res) => {
+        this.books = tool.toNArray(res.concat(res), 3)
       })
     }
   }

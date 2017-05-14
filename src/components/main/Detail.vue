@@ -3,7 +3,7 @@
     div.ui.two.column.grid#book
       div.column
         div.ui.fluid.image
-          div.ui.red.ribbon.label(v-if="book.reserved") 已预约
+          div.ui.red.ribbon.label(v-if="book.reserved == 1") 已预约
           img(v-if="book", :src="require('../../assets/' + book.picture)")
       div#info
         table#info-table(border="1")
@@ -13,7 +13,7 @@
             td {{book.name}}
           tr
             td 图书编号
-            td {{book.num}}
+            td {{book.number}}
           tr
             td 作者
             td {{book.author}}
@@ -29,39 +29,50 @@
           tr
             td 购入时间
             td {{book.buy_time}}
-    div#download
-      el-button(type='primary', @click="download") 下载PDF
+    div#btn
+      el-popover(ref='popover5', placement='top', width='160', v-model='visible')
+        p 预定图书:{{book.name}}
+        div(style='text-align: right; margin: 0')
+          el-button(size='mini', type='text', @click='visible = false') 取消
+          el-button(type='primary', size='mini', @click='makesure') 确定    
+      el-button#reserve(type="success", v-popover:popover5='', :disabled="this.book.reserved == 1") 预定
+      el-button(type='primary', @click="download") 下载PDF    
+        
 </template>
 
 <script>
 import api from '../../common/api'
+import tools from '../../common/tools'
 export default {
   name: 'detail',
   data () {
     return {
-      book: ''
+      book: '',
+      visible: false,
+      userNumber: 100
     }
   },
   methods: {
     download() {
-      let form = document.createElement('form')
-      form.setAttribute('style', 'display: none')
-      form.setAttribute('target', '')
-      form.setAttribute('method', 'post')
-      form.setAttribute('action', api.download)
-
-      let input = document.createElement('input')
-      input.setAttribute('name', 'id')
-      input.setAttribute('value', this.book.id)
-      document.body.appendChild(form)
-      form.appendChild(input)
-      form.submit()
+      tools.download(api.download, {
+        id: 'id',
+        value: this.book.number
+      })
+    },
+    makesure() {
+      api.reserve(this.userNumber, this.book.number).then(() => {
+        this.$message({
+          type: 'success',
+          message: '预定成功'
+        }),
+        this.visible = false
+      })
     }
   },
   mounted() {
-    let id = this.$route.query.id;
-    api.book(id).then((res) => {
-      this.book = res.data;
+    let number = this.$route.query.number;
+    api.book(number).then((res) => {
+      this.book = res;
     })
   }
 }
@@ -87,10 +98,10 @@ export default {
           margin-top: 1rem
         td
           padding: 10px
-  #download
+  #btn
     text-align: center
     margin: 0 auto
     width: 50%
     button
-      width: 100%
+      width: 49%
 </style>

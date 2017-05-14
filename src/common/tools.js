@@ -1,4 +1,9 @@
 export default {
+
+  /* 将数组分为每行n个的二位数组
+  *  @param1:arr, 原数组
+  *  @param2:n, 指定被划分为n列    
+   */
   toNArray(arr, n) {
     let nArr = [], arr_ = [];
     arr.forEach((item, index) => {
@@ -9,5 +14,26 @@ export default {
       }
     });
     return nArr
+  },
+
+  /* 动态创建下载表单
+  *  @param1:url, 下载的路径 
+  *  @param2:data, {key:val},下载的参数
+   */
+  download(url, data) {
+    let form = document.createElement('form')
+    form.setAttribute('style', 'display: none')
+    form.setAttribute('target', '')
+    form.setAttribute('method', 'post')
+    form.setAttribute('action', url)
+    
+    for(let key in data) {
+      let input = document.createElement('input')
+      input.setAttribute('name', key)
+      input.setAttribute('value', data[key])
+      document.body.appendChild(form)
+      form.appendChild(input)
+    }
+    form.submit()
   }
 }

@@ -1,27 +1,22 @@
 <template lang="jade">
   div#canvas-wrapper
     div.loginBox
+      h1 管理员登录
       div.img
         img.image(src="../assets/logo.jpg")
-      el-tabs(v-model='type', @tab-click='handleClick')
-        el-tab-pane(label='登录', name='signIn') 登录
-        el-tab-pane(label='注册', name='signUp') 注册
       el-form(:label-position='labelPosition', label-width='80px', :model='formData')
         el-form-item(label='编号')
           el-input.input(v-model='formData.number')
         el-form-item(label='密码')
           el-input.input(v-model='formData.password' type='password')
-        el-form-item(v-if="type == 'signUp'" label='确认密码')
-          el-input.input(v-model='formData.repeat'  type='password')
       div.err {{err}}
-      el-button.submit(type='primary', @click="submit")
-        | {{type == 'signIn' ? '登录' : '注册'}}
+      el-button.submit(type='primary', @click="submit") 登录
 </template>
 <script>
   import Particle from 'zhihu-particle'
-  import api from '../common/api'
+  import api from '../common/api-admin'
   export default {
-    name: 'login',
+    name: 'adminLogin',
     data () {
       return {
         msg: '登录/注册',
@@ -37,6 +32,7 @@
     },
     mounted () {
       new Particle(document.getElementById('canvas-wrapper'));
+      document.getElementsByClassName('left')[0].style.display = 'none';
     },
     methods: {
       handleClick (tab, event) {
@@ -56,15 +52,13 @@
           this.err = '密码不能为空'
         } else if (this.type == 'signIn') {
           api.signIn(number, password).then((res) => {
-            if(res.err) this.err = res.err;
+            if(res.data.err) this.err = res.data.err;
             else this.$router.push({
-              path: '/'
+              path: '/admin'
             });
           })
-        } else if (password !== this.formData.repeat) {
-          this.err = '两次密码不一致'
         } else {
-          api.signUp(number, password).then(() => {
+          api.signUp(number, password).then((res) => {
             this.clear();
             this.$message({
               type: 'info',
@@ -92,6 +86,11 @@
       transform: translateY(-50%) translateX(-50%)
       .img
         text-align: center
+        margin-bottom: 10px
+      h1
+        text-align: center
+        font-size: 3rem
+        color: red
       width: 30%
       .submit
         width: 100%

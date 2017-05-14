@@ -20,10 +20,12 @@
 </template>
 
 <script>
+  require('../../common/DataTable/jquery-3.2.1.min.js')
+  require('../../common/DataTable/jquery.dataTables.min.js')
   export default {
     name: 'admin',
     data () {
-      return {
+      return {  
         admin: '管理员'
       }
     },
@@ -50,44 +52,45 @@
 </script>
 
 <style scoped lang="sass">
-  #admin
-    display: flex
+@import '../../common/DataTable/jquery.dataTables.min.css'
+#admin
+  display: flex
+  height: 100%
+  width: 100%
+  .left
+    width: 12rem
+    position: relative
     height: 100%
-    width: 100%
-    .left
-      width: 12rem
-      position: relative
-      height: 100%
-      background-color: #324057
-      .header
-        text-align: center
-        color: white
-        line-height: 60px
-        font-size: 1.2rem
-        height: 60px
-        background-color: #273244
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12)
-      span
-        margin-left: 1rem
-      #bottom
-        position: absolute
-        bottom: 60px
-        width: 50px
-        height: 50px
-        border: 2px solid white
-        border-radius: 50px
-        text-align: center
-        left: 50%
-        margin-left: -25px
-        img
-          border-radius: 30px
-          margin-top: 2px
-          width: 40px
-          height: 40px
-      .name
-        position: absolute
-        width: 100%
-        text-align: center
-        color: white
-        bottom: 10px
+    background-color: #324057
+    .header
+      text-align: center
+      color: white
+      line-height: 60px
+      font-size: 1.2rem
+      height: 60px
+      background-color: #273244
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12)
+    span
+      margin-left: 1rem
+    #bottom
+      position: absolute
+      bottom: 60px
+      width: 50px
+      height: 50px
+      border: 2px solid white
+      border-radius: 50px
+      text-align: center
+      left: 50%
+      margin-left: -25px
+      img
+        border-radius: 30px
+        margin-top: 2px
+        width: 40px
+        height: 40px
+    .name
+      position: absolute
+      width: 100%
+      text-align: center
+      color: white
+      bottom: 10px
 </style>

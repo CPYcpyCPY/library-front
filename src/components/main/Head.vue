@@ -2,15 +2,20 @@
   div#head
     img(src='../../assets/logo.jpg', @click="admin")
     span#title {{title}}
-    span#login(@click="login") 登录
+    span#login(@click="login" v-if="!user") 登录
+    div#info
+      span#name(v-if="user") {{user.name}}
+      el-button#logout(v-if="user", @click="logout") 退出
 
 </template>
 <script>
+  import api from '../../common/api'
   export default {
     name: 'header',
+    props: ['user', 'logout'],
     data () {
       return {
-        title: '中大图书馆系统'
+        title: '中大图书馆系统',
       }
     },
     methods: {
@@ -45,6 +50,14 @@
     line-height: 4rem
     right: 2rem
     color: #0647ff
+  #info
+    display: inline-block
+    position: absolute
+    right: 2rem
+    line-height: 4rem
+    #name
+      margin-right: 1rem
+      font-size: 1.5rem
   img
     width: 4rem
     height: 4rem

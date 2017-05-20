@@ -3,7 +3,7 @@ import axios from 'axios'
 require('./DataTable/jquery-3.2.1.min.js')
 axios.defaults.withCredentials = true
 
-let prefix = config.url + ':' + config.port + '/api'
+let prefix = '/api'
 
 let request = (type, url, data) => {
   return $[type]({

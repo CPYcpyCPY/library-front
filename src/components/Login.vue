@@ -2,7 +2,7 @@
   div#canvas-wrapper
     div.loginBox
       div.img
-        img.image(src="../assets/logo.jpg")
+        img.image(src="/static/logo.jpg")
       el-tabs(v-model='type', @tab-click='handleClick')
         el-tab-pane(label='登录', name='signIn') 登录
         el-tab-pane(label='注册', name='signUp') 注册

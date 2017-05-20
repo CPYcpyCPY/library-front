@@ -6,6 +6,10 @@ import Login from '@/components/Login'
 import Main from '@/components/main/Main'
 import Book from '@/components/main/Book'
 import Detail from '@/components/main/Detail'
+import User from '@/components/main/user/User'
+import Info from '@/components/main/user/Info'
+import History from '@/components/main/user/History'
+import Problem from '@/components/main/user/Problem'
 
 // 管理员组件
 import AdminLogin from '@/components/AdminLogin'
@@ -27,6 +31,17 @@ export default new Router({
         { path: 'book', component: Book},
         { path: 'detail', component: Detail},
         { path: '', redirect: 'book'}
+      ]
+    },
+    {
+      path: '/user',
+      name: 'User',
+      component: User,
+      children: [
+        { path: 'info', component: Info },
+        { path: 'history', component: History },
+        { path: 'problem', component: Problem },
+        { path: '', redirect: 'info'}
       ]
     },
     { path: '/login', name: 'Login', component: Login },

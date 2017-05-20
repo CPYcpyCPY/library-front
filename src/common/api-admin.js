@@ -1,15 +1,14 @@
 import config from './config'
 import axios from 'axios'
+import tools from './tools'
 
-let prefix = config.url + ':' + config.port + '/api/admin'
+let prefix = '/api/admin'
 
 let request = (type, url, data) => {
   return $[type]({
     url: url,
     data: data,
-    xhrFields: {
-      withCredentials: true
-    }
+
   })
 }
 
@@ -33,6 +32,14 @@ export default {
     return request('get', prefix + '/deleteUser', {
       number: number
     })
+  },
+  createBook(form) {
+    let params = tools.postData(prefix + '/createBook', form)
+    return axios(prefix + '/createBook', params);
+    // return request('post', prefix + '/createBook', form)
+  },
+  updateBook(form) {
+    return request('post', prefix + '/signIn',form)
   },
   download: prefix + '/file'
 }

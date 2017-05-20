@@ -21,7 +21,6 @@
 
 <script>
   import api from '../../common/api-admin'
-  require('../../common/DataTable/jquery-3.2.1.min.js')
   export default {
     name: 'admin',
     data () {

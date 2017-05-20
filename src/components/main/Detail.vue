@@ -4,7 +4,7 @@
       div.column
         div.ui.fluid.image
           div.ui.red.ribbon.label(v-if="book.reserved == 1") 已预约
-          img(v-if="book", :src="require('../../assets/' + book.picture)")
+          img(v-if="book", :src="'/static/' + book.picture")
       div#info
         table#info-table(border="1")
           caption 图书信息

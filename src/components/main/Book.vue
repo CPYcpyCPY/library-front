@@ -2,7 +2,7 @@
   div#books
     div.book-row(v-for='book in books')
       div.book(v-for="b in book", @click='bookDetail(b.number)')
-        img(:src="require('../../assets/' + b.picture)")
+        img(:src="'/static/' + b.picture")
         div#info1
           div.book-name
             i.el-icon-document
@@ -38,7 +38,7 @@
     },
     created () {
       api.books(2).then((res) => {
-        this.books = tool.toNArray(res.concat(res), 3)
+        this.books = tool.toNArray(res, 3)
       })
     }
   }

@@ -1,11 +1,11 @@
 <template lang="jade">
   div#head
-    img(src='../../assets/logo.jpg', @click="admin")
+    img(src='/static/logo.jpg', @click="admin")
     span#title {{title}}
     span#login(@click="login" v-if="!user") 登录
     div#info
-      span#name(v-if="user") {{user.name}}
-      el-button#logout(v-if="user", @click="logout") 退出
+      span#name(v-if="user", @click="userCenter") {{user.name}}
+      el-button#logout(type="danger", v-if="user", @click="logout") 退出
 
 </template>
 <script>
@@ -20,14 +20,13 @@
     },
     methods: {
       admin () {
-        this.$router.push({
-          name: 'admin'
-        })
+        this.$router.push('/admin')
+      },
+      userCenter () {
+        this.$router.push('/user')
       },
       login () {
-        this.$router.push({
-          name: 'Login'
-        })
+        this.$router.push('/login')
       }
     }
   }
@@ -36,13 +35,13 @@
 #head
   width: 100%
   position: relative
-  height: 4rem
+  height: 5rem
   background-color: #0bdbdc
   #title
     position: absolute
-    line-height: 4rem
+    line-height: 5rem
     left: 50%
-    font-size: 2rem
+    font-size: 3rem
     color: #0647ff
     transform: translateX(-50%)
   #login
@@ -54,11 +53,14 @@
     display: inline-block
     position: absolute
     right: 2rem
-    line-height: 4rem
+    line-height: 5rem
     #name
       margin-right: 1rem
-      font-size: 1.5rem
+      font-size: 2rem
+      color: rgb(58, 59, 185)
+    #logout
+      transform: translateY(-10%)
   img
-    width: 4rem
-    height: 4rem
+    width: 5rem
+    height: 5rem
 </style>

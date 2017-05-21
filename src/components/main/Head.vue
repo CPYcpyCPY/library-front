@@ -46,8 +46,9 @@
     transform: translateX(-50%)
   #login
     position: absolute
-    line-height: 4rem
+    line-height: 5rem
     right: 2rem
+    font-size: 2rem
     color: #0647ff
   #info
     display: inline-block

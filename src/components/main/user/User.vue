@@ -1,7 +1,7 @@
 <template lang="jade">
-  div#admin
+  div#user
     div.left
-      div.header 个人中心
+      div.header 读者:{{user.name}}
       el-menu.el-menu-vertical-demo(theme='dark' router)
         el-menu-item(index='/user/info')
           i.el-icon-menu
@@ -15,24 +15,33 @@
     transition(name="fade" mode="out-in")
       router-view
 </template>
-<<script>
+<script>
+import api from '../../../common/api.js'
 export default {
   name: 'user',
   data () {
     return {  
-      admin: '用户中心'
+      user: '个人中心'
     }
+  },
+  beforeCreate() {
+    api.isLogin().then((res) => {
+      if(res.msg) this.user = res.user;
+      else this.$router.push('/login')
+    })
   }
 }
 </script>
 <<style lang="sass">
-#admin
+#app
+  background-color: #EFF2F7
+#user
   display: flex
-  height: 100%
+  height: auto
   width: 100%
   .left
     width: 12rem
-    position: relative
+    position: fixed
     height: 100%
     background-color: #324057
     .header

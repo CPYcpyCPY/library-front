@@ -1,48 +1,83 @@
 <template lang="jade">
-  div#auth
-    h2#title 用户列表
-    template
-      el-table(v-if="users", :data='users', border='', style='width: 86%')
-        el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", width="180", :key="key")
-        el-table-column(label='操作', width="180")
-           el-button(size='small', type='danger', @click='handleDelete(index)') 删除
+  div#problem
+    h2#title {{inBlackList ? '暂无题目': '答题列表(请认真对待)'}}
+    div#form(v-if="!inBlackList && problems")
+      form.pro-item(v-for="(p,i) in problems")
+        label.title 题目{{p.number}}: {{p.title}}
+        div.choose
+          div.item(v-for="(val, key) in p.selects")
+            input(type="radio", name="pro", :value="key")
+            span.val {{val}}
+      el-button#submit(type='primary', @click="submitProblems", v-loading.fullscreen.lock="fullscreenLoading") 提交         
 </template>
 <script>
-  import api from '../../../common/api-admin'
+  import api from '../../../common/api'
   export default {
     name: 'problem',
     data () {
       return {
-        base: {
-          name: '姓名',
-          number: '读者编号',
-          college: '学院',
-          sex: '性别',
-          mail: '邮箱'
-        },
-        msg: '图书预定',
-        users: ''
+        user : '',
+        inBlackList: false,
+        fullscreenLoading: false,
+        problems: ''
       }
     },
     beforeCreate() {
-      api.users().then((res) => {
-        this.users = res
+      api.isLogin().then((res) => {
+        if(res.msg) this.user = res.user;
+        else this.$router.push('/login')
+        api.getProblem(this.user.number).then((res) => {
+          this.problems = res;
+        })
       })
     },
     methods: {
-      handleDelete(index) {
-        alert("2312");
-        console.log(this.users[index]);
+      submitProblems() {
+        let result = [], items = $("[name='pro']:checked");
+        for(let i = 0; i < items.length; i++) result.push(items[i].value)
+        this.fullscreenLoading = true;
+        api.submitProblems(this.user.number, result.join('-')).then((res) => {
+          this.fullscreenLoading = false;
+          this.$notify({
+            type: res.msg ? 'success': 'error',
+            title: res.msg ? '正确': '错误',
+            message: res.msg ? '答案正确，已解除黑名单' : '答案错误，请重新作答'
+          })
+        })
       }
     }
   }
 </script>
 <style scoped lang="sass">
-  #auth
-    flex: 1
-    padding-left: 1rem
-    background-color: #EFF2F7
-    #title
-      margin: 20px
-      font-size: 2rem
+#problem
+  flex: 1
+  margin-left: 12rem
+  padding-left: 1rem
+  background-color: #EFF2F7
+  padding-bottom: 2rem
+  #title
+    margin: 20px
+    font-size: 2rem
+  #form
+    width: 80%
+    margin: 0 auto
+    padding: 10px
+    .pro-item
+      margin-bottom: 2rem
+      .title
+        font-size: 1.5rem  
+      .choose
+        margin-top: 1rem
+        font-size: 1.2rem
+        display: flex
+        .item
+          height: 2rem
+          line-height: 2rem
+          flex: 1
+          .val
+            margin-left: 0.5rem  
+    #submit
+      width: 60%
+      display: block
+      margin: 0 auto
 </style>

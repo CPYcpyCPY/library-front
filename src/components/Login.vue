@@ -71,7 +71,7 @@
               type: 'info',
               message: '注册成功'
             })
-            
+
           })
         }
       }

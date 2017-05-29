@@ -6,7 +6,7 @@
           el-table-column(v-for="(val, key) in base", :prop="key", :label="val", width='150', :key="key")
           el-table-column(label='操作', width="180")
             template(scope='scope')
-              el-button(size='small', type='info' @click="update(scope.$index)") 编辑
+              el-button(size='small', type='info', @click="update(scope.$index)") 编辑
               el-button(size='small', type='danger', @click='deleteBook(scope.$index)') 删除
       el-tab-pane(label='已借阅图书')
         el-table(v-if="orderBooks", :data='orderBooks', stripe='', style='margin: 0 auto; width: 85%')
@@ -23,7 +23,7 @@
               el-date-picker(type='date', placeholder='选择购入日期', v-model='form.buy_time', style='width: 100%;')
           div#upload
             img(:src="img")
-            input#file(type="file", v-on:change="uploadfile")     
+            input#file(type="file", v-on:change="uploadfile")
           el-form-item
             el-button(type='primary', @click='submit') 立即创建
             el-button 取消
@@ -36,11 +36,11 @@
             el-option(v-for="(school, index) in schools", :label="school", :value="school", :key="index")
         el-form-item(label='购入时间')
           el-col(:span='11')
-            el-date-picker(type='date', placeholder='选择日期', v-model='updateForm.buy_time', style='width: 100%;')   
+            el-date-picker(type='date', placeholder='选择日期', v-model='updateForm.buy_time', style='width: 100%;')
       div.dialog-footer(slot='footer')
         el-button(@click="dialogVisible = false") 取 消
-        el-button(type='primary' @click="updateBook") 确 定
-         
+        el-button(type='primary', @click="updateBook") 确 定
+
 </template>
 <script>
   import api from '../../common/api.js'
@@ -85,8 +85,15 @@
       },
       updateBook() {
         this.dialogVisible = false
-        api.update(this.updateForm).then(() => {
-
+        console.log(this.updateForm);
+        if(!(this.updateForm.buy_time instanceof Date))
+          this.updateForm.buy_time = new Date(this.updateForm.buy_time);
+        this.updateForm.buy_time = tools.getStandardDate(this.updateForm.buy_time)
+        admin.updateBook(this.updateForm).then(() => {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
         })
       },
       handleRemove(file, fileList) {
@@ -151,5 +158,5 @@
       #file
         width: 50%
         display: block
-        margin: 0 auto  
+        margin: 0 auto
 </style>

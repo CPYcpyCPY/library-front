@@ -51,10 +51,29 @@ export default {
       number: number
     })
   },
+  updateUser (form) {
+    return request('post', prefix + '/update', form)
+  },
   reserve (userNumber, bookNumber) {
-    return request('get', prefix + '/book-reserve', {
+    return request('get', prefix + '/reserve', {
       userNumber: userNumber,
-        bookNumber: bookNumber
+      bookNumber: bookNumber
+    })
+  },
+  getReserve (number) {
+    return request('get', prefix + '/getReserve', {
+      number: number
+    })
+  },
+  getProblem (number) {
+    return request('get', prefix + '/getProblems', {
+      number: number
+    })
+  },
+  submitProblems (number, result) {
+    return request('get', prefix + '/submitProblems', {
+      number: number,
+      result: result
     })
   },
   download: prefix + '/file'

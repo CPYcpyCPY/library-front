@@ -1,48 +1,66 @@
 <template lang="jade">
-  div#auth
-    h2#title 用户列表
-    template
-      el-table(v-if="users", :data='users', border='', style='width: 86%')
-        el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", width="180", :key="key")
-        el-table-column(label='操作', width="180")
-           el-button(size='small', type='danger', @click='handleDelete(index)') 删除
+  div#info
+    h2#title 个人信息编辑
+    el-form#form(label-position='right', label-width='80px', :model='form')
+      el-form-item(label='名字')
+        el-input(v-model='user.name')
+      el-form-item(label='校区')
+        el-input(v-model='user.college')
+      el-form-item(label='性别')
+        el-input(v-model='user.sex')
+      el-form-item(label='邮箱')
+        el-input(v-model='user.mail')
+      el-button#submit(type='primary', @click="updateUser") 提交
 </template>
 <script>
-  import api from '../../../common/api-admin'
+  import api from '../../../common/api'
   export default {
     name: 'info',
     data () {
       return {
-        base: {
-          name: '姓名',
-          number: '读者编号',
-          college: '学院',
-          sex: '性别',
-          mail: '邮箱'
-        },
-        msg: '图书预定',
-        users: ''
+        user: '',
+        form: {
+          name: ''
+        }
       }
     },
     beforeCreate() {
-      api.users().then((res) => {
-        this.users = res
+      api.isLogin().done((res) => {
+        if(res.msg) this.user = res.user;
+        else this.$router.push('/login')
       })
     },
     methods: {
-      handleDelete(index) {
-        alert("2312");
-        console.log(this.users[index]);
-      }
+      updateUser() {
+        this.form.number = this.user.number
+        this.form.name = this.user.name
+        this.form.college = this.user.college
+        this.form.sex = this.user.sex
+        this.form.mail = this.user.mail
+        api.updateUser(this.form).done(() => {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        })
+      },
     }
   }
 </script>
 <style scoped lang="sass">
-  #auth
-    flex: 1
-    padding-left: 1rem
-    background-color: #EFF2F7
-    #title
-      margin: 20px
-      font-size: 2rem
+#info
+  flex: 1
+  padding-left: 1rem
+  margin-left: 12rem
+  background-color: #EFF2F7
+  #title
+    margin: 20px
+    font-size: 2rem
+  #form
+    margin-top: 5rem
+    width: 60%
+    #submit
+      display: block
+      width: 95%
+      margin: 0 auto
 </style>

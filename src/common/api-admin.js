@@ -39,7 +39,7 @@ export default {
     // return request('post', prefix + '/createBook', form)
   },
   updateBook(form) {
-    return request('post', prefix + '/signIn',form)
+    return request('post', prefix + '/updateBook', form)
   },
   download: prefix + '/file'
 }

@@ -73,4 +73,15 @@
       display: block
       margin: 0 auto
       width: 90%
+  background-color: #EFF2F7
+  #title
+    margin: 20px
+    font-size: 2rem
+  #form
+    margin-top: 5rem
+    width: 60%
+    #submit
+      display: block
+      width: 95%
+      margin: 0 auto
 </style>

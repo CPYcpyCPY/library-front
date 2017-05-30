@@ -146,15 +146,6 @@
         this.freeBooks = res[0];
         this.orderBooks = res[1];
       })
-    },
-    beforeCreate() {
-      admin.isLogin().done((res) => {
-        if(res.msg) this.user = res.admin;
-        else this.$router.push('/admin/login')
-      })
-    },
-    mounted() {
-      document.getElementsByClassName('left')[0].style.display = 'block'
     }
   }
 </script>

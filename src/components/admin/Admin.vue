@@ -8,10 +8,10 @@
             span 图书管理
         el-menu-item(index='/admin/auth')
           i.el-icon-setting
-            span 账号管理
+            span 正常用户
         el-menu-item(index='/admin/blacklist')
           i.el-icon-warning
-            span 黑名单
+            span 黑名单用户
       div#bottom
         img(src='../../assets/fish.png')
       p.name(@click="signOut") 您好{{admin.name}} | 退出
@@ -31,7 +31,7 @@
     beforeCreate() {
       api.isLogin().done((res) => {
         if(res.msg) this.admin = res.admin;
-        else this.$router.push('/admin/login')
+        else this.$router.push('/adminLogin')
       })
     },
     methods: {
@@ -70,7 +70,6 @@
     width: 12rem
     position: fixed
     height: 100%
-    display: none
     background-color: #324057
     .header
       text-align: center

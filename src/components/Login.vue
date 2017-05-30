@@ -65,13 +65,12 @@
         } else if (password !== this.formData.repeat) {
           this.err = '两次密码不一致'
         } else {
-          api.signUp(number, password).done(() => {
+          api.signUp(number, password).done((res) => {
             this.clear();
             this.$message({
-              type: 'success',
-              message: '注册成功'
+              type: res.err ? 'error': 'success',
+              message: res.err ? res.err : res.msg
             })
-
           })
         }
       }

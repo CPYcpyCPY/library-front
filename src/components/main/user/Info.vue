@@ -4,9 +4,8 @@
     el-form#form(label-position='right', label-width='80px', :model='form')
       el-form-item.text(label='名字')
         el-input(v-model='form.name')
-      el-form-item.text(label='校区')
-        el-select.select(v-model='form.school', placeholder='请选择校区')
-          el-option(v-for="(school, index) in schools", :label="school", :value="school", :key="index")
+      el-form-item.text(label='学院')
+        el-input(v-model='form.school')
       el-form-item.text(label='性别')
         el-input(v-model='form.sex')
       el-form-item.text(label='邮箱')
@@ -20,7 +19,6 @@
     data () {
       return {
         user: '',
-        schools: ['东校区', '南校区', '北校区', '珠海校区'],
       }
     },
     computed: {

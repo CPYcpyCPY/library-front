@@ -29,7 +29,7 @@ export default new Router({
       children: [
         { path: 'book', component: Book},
         { path: 'detail', component: Detail},
-        { path: '/', redirect: 'book'}
+        { path: '', redirect: 'book'}
       ]
     },
     {
@@ -39,7 +39,7 @@ export default new Router({
         { path: 'info', component: Info },
         { path: 'history', component: History },
         { path: 'problem', component: Problem },
-        { path: '/', redirect: 'info'}
+        { path: '', redirect: 'info'}
       ]
     },
     { path: '/login', name: 'Login', component: Login },
@@ -51,7 +51,7 @@ export default new Router({
         {path: 'manage', component: Manage},
         {path: 'auth', component: Auth},
         {path: 'blacklist', component: BlackList},
-        {path: '/', redirect: 'manage'},
+        {path: '', redirect: 'manage'},
       ]
     }
   ]

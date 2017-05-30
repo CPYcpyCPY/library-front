@@ -18,7 +18,7 @@
         base: {
           name: '姓名',
           number: '读者编号',
-          college: '学院',
+          school: '学院',
           sex: '性别',
           mail: '邮箱'
         },
@@ -27,7 +27,7 @@
       }
     },
     beforeCreate() {
-      api.users().then((res) => {
+      api.users(0).then((res) => {
         this.users = res
       })
     },
@@ -50,14 +50,20 @@
       },
       addToBlackList(index) {
         let user = this.users[index]
-        this.$prompt('请输入备注:', '确定将用户:' + user.name + '拉入黑名单', {
+        this.$prompt('请输入备注:', '确定将用户:"' + user.name + '"拉入黑名单', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: '你的备注是: ' + value
-          });
+          api.addToBlackList({
+            number: user.number,
+            message: value
+          }).then((res) => {
+            this.users.splice(index, 1);
+            this.$message({
+              type: 'success',
+              message: res.msg
+            });
+          })
         }).catch(() => {});
       }
     }

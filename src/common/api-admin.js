@@ -25,8 +25,10 @@ export default {
       password: password
     })
   },
-  users () {
-    return request('get', prefix + '/users', {})
+  users (flag) {
+    return request('get', prefix + '/users', {
+      flag: flag
+    })
   },
   deleteUser(number) {
     return request('get', prefix + '/deleteUser', {
@@ -46,9 +48,15 @@ export default {
       number: number
     })
   },
-  addToBlackList(number) {
+  addToBlackList(data) {
     return request('post', prefix + '/addToBlackList', {
-      number: number
+      number: data.number,
+      message: data.message
+    })
+  },
+  removeFromBlackList(number) {
+    return request('post', prefix + '/removeFromBlackList', {
+      number: number,
     })
   },
   download: prefix + '/file'

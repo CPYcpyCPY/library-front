@@ -14,7 +14,7 @@
             span 黑名单
       div#bottom
         img(src='../../assets/fish.png')
-      p.name(@click="signOut") 您好{{admin}} | 退出
+      p.name(@click="signOut") 您好{{admin.name}} | 退出
     transition(name="fade" mode="out-in")
       router-view
 </template>
@@ -24,15 +24,14 @@
   export default {
     name: 'admin',
     data () {
-      return {  
+      return {
         admin: '管理员'
       }
     },
     beforeCreate() {
       api.isLogin().done((res) => {
-         this.$router.push({
-          path: res.msg ? '/admin/manage': '/admin/login' 
-        })
+        if(res.msg) this.admin = res.admin;
+        else this.$router.push('/admin/login')
       })
     },
     methods: {
@@ -65,12 +64,13 @@
 <style scoped lang="sass">
 #admin
   display: flex
-  height: 100%
+  height: auto
   width: 100%
   .left
     width: 12rem
-    position: relative
+    position: fixed
     height: 100%
+    display: none
     background-color: #324057
     .header
       text-align: center

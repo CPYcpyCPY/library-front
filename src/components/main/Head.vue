@@ -20,7 +20,7 @@
     },
     methods: {
       admin () {
-        this.$router.push('/admin')
+        this.$router.push('/adminLogin')
       },
       userCenter () {
         this.$router.push('/user')

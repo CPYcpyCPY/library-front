@@ -25,35 +25,33 @@ export default new Router({
     { path: '/', redirect: '/main' },
     {
       path: '/main',
-      name: 'Main',
       component: Main,
       children: [
         { path: 'book', component: Book},
         { path: 'detail', component: Detail},
-        { path: '', redirect: 'book'}
+        { path: '/', redirect: 'book'}
       ]
     },
     {
       path: '/user',
-      name: 'User',
       component: User,
       children: [
         { path: 'info', component: Info },
         { path: 'history', component: History },
         { path: 'problem', component: Problem },
-        { path: '', redirect: 'info'}
+        { path: '/', redirect: 'info'}
       ]
     },
     { path: '/login', name: 'Login', component: Login },
+    { path: '/adminLogin', component: AdminLogin},
     {
       path: '/admin',
-      name: 'admin',
       component: Admin,
       children: [
-        {path: 'login', component: AdminLogin},
         {path: 'manage', component: Manage},
         {path: 'auth', component: Auth},
         {path: 'blacklist', component: BlackList},
+        {path: '/', redirect: 'manage'},
       ]
     }
   ]

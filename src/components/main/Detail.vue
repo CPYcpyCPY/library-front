@@ -4,7 +4,7 @@
       div.column
         div.ui.fluid.image
           div.ui.red.ribbon.label(v-if="book.reserved == 1") 已预约
-          img(v-if="book", :src="'/static/' + book.picture")
+          img(v-if="book", :src="'/static/cover/' + book.picture")
       div#info
         table#info-table(border="1")
           caption 图书信息
@@ -34,10 +34,10 @@
         p 预定图书:{{book.name}}
         div(style='text-align: right; margin: 0')
           el-button(size='mini', type='text', @click='visible = false') 取消
-          el-button(type='primary', size='mini', @click='makesure') 确定    
+          el-button(type='primary', size='mini', @click='makesure') 确定
       el-button#reserve(type="success", v-popover:popover5='', :disabled="this.book.reserved == 1") 预定
-      el-button(type='primary', @click="download") 下载PDF    
-        
+      el-button(type='primary', @click="download") 下载PDF
+
 </template>
 
 <script>

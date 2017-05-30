@@ -2,7 +2,7 @@
   div#books
     div.book-row(v-for='book in books')
       div.book(v-for="b in book", @click='bookDetail(b.number)')
-        img(:src="'/static/' + b.picture")
+        img(:src="'/static/cover/' + b.picture")
         div#info1
           div.book-name
             i.el-icon-document

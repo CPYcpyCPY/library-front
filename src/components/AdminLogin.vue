@@ -32,7 +32,6 @@
     },
     mounted () {
       new Particle(document.getElementById('canvas-wrapper'));
-      document.getElementsByClassName('left')[0].style.display = 'none';
     },
     methods: {
       handleClick (tab, event) {

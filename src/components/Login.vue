@@ -68,7 +68,7 @@
           api.signUp(number, password).done(() => {
             this.clear();
             this.$message({
-              type: 'info',
+              type: 'success',
               message: '注册成功'
             })
 

@@ -16,7 +16,7 @@ export default {
   isLogin () {
     return request('get', prefix + '/isLogin', {})
   },
-  logout(number) {
+  logout() {
     return request('post', prefix + '/logout', {})
   },
   signIn (number, password) {
@@ -40,6 +40,16 @@ export default {
   },
   updateBook(form) {
     return request('post', prefix + '/updateBook', form)
+  },
+  deleteBook(number) {
+    return request('post', prefix + '/deleteBook', {
+      number: number
+    })
+  },
+  addToBlackList(number) {
+    return request('post', prefix + '/addToBlackList', {
+      number: number
+    })
   },
   download: prefix + '/file'
 }

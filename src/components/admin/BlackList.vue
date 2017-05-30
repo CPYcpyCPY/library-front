@@ -40,6 +40,7 @@
 <style scoped lang="sass">
   #auth
     flex: 1
+    margin-left: 12rem
     padding-left: 1rem
     background-color: #EFF2F7
     #title

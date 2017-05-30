@@ -23,7 +23,9 @@
               el-date-picker(type='date', placeholder='选择购入日期', v-model='form.buy_time', style='width: 100%;')
           div#upload
             img(:src="img")
-            input#file(type="file", v-on:change="uploadfile")
+            div.btn
+              el-button(type="primary", @click="uploadImg") 上传图片
+              el-button(type="warning", @click="uploadPdf") 上传PDF
           el-form-item
             el-button(type='primary', @click='submit') 立即创建
             el-button 取消
@@ -56,13 +58,13 @@
           number: '图书编号',
           name: '书名',
           author: '作者/译者',
-          publisher:'出版社',
+          publisher: '出版社',
           type: '类型',
           school: '校区',
           buy_time: '购入时间'
         },
-        updateForm: { number: '', name: '', author: '', publisher: '',type: '', school: '', buy_time:""},
-        form: { number: '', author: '', name: '', publisher: '', type: '', school: '', buy_time:"",  file: ''},
+        updateForm: {number: '', name: '', author: '', publisher: '', type: '', school: '', buy_time: ""},
+        form: {number: '', author: '', name: '', publisher: '', type: '', school: '', buy_time: ""},
         schools: ['东校区', '南校区', '北校区', '珠海校区'],
         msg: '图书管理',
         freeBooks: "",
@@ -74,9 +76,11 @@
       submit() {
         admin.createBook(this.form).then((res) => {
           this.$message({
-              type: res.data.err ? 'warning' : 'success',
-              message: res.data.err ? res.data.err: res.data.msg
-            })
+            type: res.data.err ? 'error' : 'success',
+            message: res.data.err ? res.data.err : res.data.msg
+          })
+          this.form.buy_time = tools.getStandardDate(this.form.buy_time)
+          this.freeBooks.push(this.form);
         })
       },
       update(index) {
@@ -86,7 +90,7 @@
       updateBook() {
         this.dialogVisible = false
         console.log(this.updateForm);
-        if(!(this.updateForm.buy_time instanceof Date))
+        if (!(this.updateForm.buy_time instanceof Date))
           this.updateForm.buy_time = new Date(this.updateForm.buy_time);
         this.updateForm.buy_time = tools.getStandardDate(this.updateForm.buy_time)
         admin.updateBook(this.updateForm).then(() => {
@@ -100,26 +104,39 @@
         console.log(file, fileList);
       },
       deleteBook(index) {
-        console.log(this.freeBooks[index]);
-        // api.deleteBook()
+        let book = this.freeBooks[index];
+        this.$confirm('确定删除图书:' + book.name, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          admin.deleteBook(book.number).then(() => {
+            this.$message({type: 'success', message: '删除图书成功!'})
+            this.freeBooks.splice(index, 1);
+          })
+        }).catch(() => {})
       },
-      uploadfile(evt) {
-        let file = evt.target.files[0] //只上传一张，所以取第一个
-        let type = file.type && file.type.split('/')[1].trim()
-        if(type == 'png' || type == 'jpg' || type == 'jpeg') {
-          let reader = new FileReader();
-          reader.onloadend = (e) => {
-            this.img = e.target.result
+      uploadImg() {
+        tools.upload('img', (result) => {
+          if (result.err) {
+            this.$message({type: 'error', message: '文件格式不正确!'})
+          } else {
+            this.$message({type: 'success', message: '上传图片成功!'})
+            this.img = result.url;
+            this.form.picture = result.picture;
+            this.form.file = result.file;
           }
-          reader.readAsDataURL(file);
-          this.form.picture = file.name
-          this.form.file = file
-        } else {
-          this.$message({
-              type: 'warning',
-              message: '文件格式不正确!'
-            })
-        }
+        })
+      },
+      uploadPdf() {
+        tools.upload('pdf', (result) => {
+          if (result.err) {
+            this.$message({type: 'warning', message: '文件格式不正确!'})
+          } else {
+            this.$message({type: 'success', message: '上传pdf成功!'})
+            this.form.pdf = result.file;
+          }
+        })
       }
     },
     created() {
@@ -128,6 +145,12 @@
       ]).then((res) => {
         this.freeBooks = res[0];
         this.orderBooks = res[1];
+      })
+    },
+    beforeCreate() {
+      admin.isLogin().done((res) => {
+        if(res.msg) this.user = res.admin;
+        else this.$router.push('/admin/login')
       })
     },
     mounted() {
@@ -139,22 +162,26 @@
   #manage
     margin-top: 1rem
     width: 100%
+    margin-left: 12rem
     flex: 1
     background-color: #EFF2F7
     #table
       width: 500px
     #upload
       top: 5rem
-      right: 5rem
-      width: 30%
+      right: 10rem
+      width: 20%
       height: auto
       position: absolute
       img
         display: block
-        margin: 0 auto
-        width: 16rem
+        margin: 0 auto 1rem
+        width: 100%
         height: 20rem
-        margin-bottom: 1rem
+      .btn
+        text-align: center
+        button
+          width: 48%
       #file
         width: 50%
         display: block

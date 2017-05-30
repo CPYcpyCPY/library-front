@@ -6,12 +6,13 @@
         el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", width="180", :key="key", sortable)
         el-table-column(label='操作', width="180")
           template(scope='scope')
+            el-button.btn-black(size='small', type='warning', @click='addToBlackList(scope.$index)') 拉入黑名单
             el-button(size='small', type='danger', @click='deleteUser(scope.$index)') 删除
 </template>
 <script>
   import api from '../../common/api-admin'
   export default {
-    name: 'reserve',
+    name: 'auth',
     data () {
       return {
         base: {
@@ -46,6 +47,18 @@
             this.users.splice(index, 1);
           })
         }).catch(() => {});
+      },
+      addToBlackList(index) {
+        let user = this.users[index]
+        this.$prompt('请输入备注:', '确定将用户:' + user.name + '拉入黑名单', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(({ value }) => {
+          this.$message({
+            type: 'success',
+            message: '你的备注是: ' + value
+          });
+        }).catch(() => {});
       }
     }
   }
@@ -53,9 +66,13 @@
 <style scoped lang="sass">
   #auth
     flex: 1
+    margin-left: 12rem
     padding-left: 1rem
     background-color: #EFF2F7
     #title
       margin: 20px
       font-size: 2rem
+    .btn-black
+      background-color: #3e5059
+      border-color: #607D8B
 </style>

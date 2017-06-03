@@ -20,15 +20,17 @@ import api from '../../../common/api.js'
 export default {
   name: 'user',
   data () {
-    return {  
-      user: '个人中心'
+    return {
+      text: '个人中心',
     }
   },
-  beforeCreate() {
-    api.isLogin().then((res) => {
-      if(res.msg) this.user = res.user;
-      else this.$router.push('/login')
-    })
+  computed: {
+    user() {
+      return this.$store.state.user.user
+    }
+  },
+  created() {
+    if(!this.user) this.$router.push('/login')
   }
 }
 </script>
@@ -74,5 +76,5 @@ export default {
       width: 100%
       text-align: center
       color: white
-      bottom: 10px  
+      bottom: 10px
 </style>

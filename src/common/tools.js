@@ -50,13 +50,13 @@ export default {
     let input = document.createElement('input')
     input.type = 'file'
     document.body.appendChild(input)
-    input.click();
+    input.click()
     input.onchange = (evt) => {
       let file = evt.target.files[0] //只上传一张，所以取第一个
       let type = file.type && file.type.split('/')[1].trim()
-      if(fileMap[fileType].indexOf(type) != -1) {
-        if(fileType == 'img') {  //如果是图片，则需要预览
-          let reader = new FileReader();
+      if (fileMap[fileType].indexOf(type) != -1) {
+        if (fileType == 'img') {  //如果是图片，则需要预览
+          let reader = new FileReader()
           reader.onloadend = (e) => {
             cb({
               picture: file.name,  // xxx.jpg
@@ -64,7 +64,7 @@ export default {
               file: file
             })
           }
-          reader.readAsDataURL(file);
+          reader.readAsDataURL(file)
         } else {
           cb({file: file})
         }
@@ -77,7 +77,7 @@ export default {
 
   // 传入Object，返回表单
   generateForm (data) {
-    console.log(data);
+    console.log(data)
     let formData = new FormData()
     for (var key in data) {
       formData.append(key, data[key])
@@ -96,11 +96,13 @@ export default {
 
   // 返回标准时间格式: yyyy-mm-dd
   getStandardDate (date) {
+    if (!(date instanceof Date)) date = new Date(date);
     var y = date.getFullYear(),
       m = date.getMonth() + 1,
       d = date.getDate()
     if (m < 10) m = '0' + m
     if (d < 10) d = '0' + d
     return y + '-' + m + '-' + d
+
   }
 }

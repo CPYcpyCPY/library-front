@@ -8,7 +8,7 @@
           div.item(v-for="(val, key) in p.selects")
             input(type="radio", name="pro", :value="key")
             span.val {{val}}
-      el-button#submit(type='primary', @click="submitProblems", v-loading.fullscreen.lock="fullscreenLoading") 提交         
+      el-button#submit(type='primary', @click="submitProblems", v-loading.fullscreen.lock="fullscreenLoading") 提交
 </template>
 <script>
   import api from '../../../common/api'
@@ -57,15 +57,15 @@
   padding-bottom: 2rem
   #title
     margin: 20px
-    font-size: 2rem
+    font-size: 2.5rem
   #form
     width: 80%
-    margin: 0 auto
+    margin: 2rem auto 0
     padding: 10px
     .pro-item
       margin-bottom: 2rem
       .title
-        font-size: 1.5rem  
+        font-size: 1.5rem
       .choose
         margin-top: 1rem
         font-size: 1.2rem
@@ -75,9 +75,9 @@
           line-height: 2rem
           flex: 1
           .val
-            margin-left: 0.5rem  
+            margin-left: 0.5rem
     #submit
-      width: 60%
+      width: 100%
       display: block
       margin: 0 auto
 </style>

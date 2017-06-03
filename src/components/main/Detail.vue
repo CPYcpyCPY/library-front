@@ -30,12 +30,7 @@
             td 购入时间
             td {{book.buy_time}}
     div#btn
-      el-popover(ref='popover5', placement='top', width='160', v-model='visible')
-        p 预定图书:{{book.name}}
-        div(style='text-align: right; margin: 0')
-          el-button(size='mini', type='text', @click='visible = false') 取消
-          el-button(type='primary', size='mini', @click='makesure') 确定
-      el-button#reserve(type="success", v-popover:popover5='', :disabled="this.book.reserved == 1") 预定
+      el-button#reserve(type="success", @click="reserve", :disabled="book.reserved == 1") 预定
       el-button(type='primary', @click="download") 下载PDF
 
 </template>
@@ -48,8 +43,11 @@ export default {
   data () {
     return {
       book: '',
-      visible: false,
-      userNumber: 100
+    }
+  },
+  computed: {
+    user () {
+      return this.$store.state.user.user
     }
   },
   methods: {
@@ -59,14 +57,29 @@ export default {
         value: this.book.number
       })
     },
-    makesure() {
-      api.reserve(this.userNumber, this.book.number).then(() => {
-        this.$message({
-          type: 'success',
-          message: '预定成功'
-        }),
-        this.visible = false
-      })
+    reserve () {
+      console.log(this.user);
+      if(!this.user) {
+        this.$notify({
+          title: '警告',
+          message: '请先登录！',
+          type: 'warning'
+        });
+      } else {
+        this.$confirm('确定预定图书:"' + this.book.name + '"', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api.reserve(this.book.number).then((res) => {
+            this.$message({
+              type: 'success',
+              message: res.msg
+            })
+            this.book.reserved = 1
+          })
+        }).catch(()=>{})
+      }
     }
   },
   mounted() {

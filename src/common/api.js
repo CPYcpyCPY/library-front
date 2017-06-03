@@ -54,14 +54,18 @@ export default {
   updateUser (form) {
     return request('post', prefix + '/update', form)
   },
-  reserve (userNumber, bookNumber) {
-    return request('get', prefix + '/reserve', {
-      userNumber: userNumber,
+  reserve (bookNumber) {
+    return request('post', prefix + '/reserve', {
       bookNumber: bookNumber
     })
   },
-  getReserve (number) {
-    return request('get', prefix + '/getReserve', {
+  getReserveHistory (number) {
+    return request('get', prefix + '/getReserveHistory', {
+      number: number
+    })
+  },
+  giveBack (number) {
+    return request('post', prefix + '/giveBack', {
       number: number
     })
   },

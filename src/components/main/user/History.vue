@@ -1,8 +1,12 @@
 <template lang="jade">
   div#history
     h2#title 图书借阅记录
-    el-table#table(v-if="reserves", :data='reserves', border='', style='width: 540px', :row-class-name="tableRowClassName")
-      el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", width="180", :key="key")
+    el-table#table(v-if="reserves", :data='reserves', border='', style='width: 80%')
+      el-table-column(v-if="key != 'isReturn'", v-for="(val, key, index) in base", :prop="key", :label="val", width="180", :key="key")
+      el-table-column(v-else, label="是否归还")
+        template(scope="scope")
+          span.return(:class="{'no-return': !scope.row.isReturn}") {{scope.row.isReturn ? '是': '否'}}
+          el-button(v-if="!scope.row.isReturn", size='small', type='info', @click="giveBack(scope.$index)") 归还
 </template>
 <script>
   import api from '../../../common/api'
@@ -11,31 +15,42 @@
     data () {
       return {
         base: {
-          date: '日期',
-          name: '书名',
+          reserve_time: '借阅日期',
+          name: '图书名称',
+          book_number: '图书编号',
           isReturn: '是否归还'
         },
-        reserves: [
-          {name: '三国演义', 'date': '2017-05-10', isReturn: '否'},
-          {name: '水浒传', 'date': '2017-03-10', isReturn: '否'},
-          {name: '红楼梦', 'date': '2017-04-12', isReturn: '是'},
-          {name: '西游记', 'date': '2017-05-15', isReturn: '否'}
-        ],
+        reserves: [],
         msg: '图书预定',
         users: ''
       }
     },
-    beforeCreate() {
-      // api.getReserve() 
+    computed: {
+      user() {
+        return this.$store.state.user.user
+      }
     },
     mounted() {
-      $('.no-return').css('background', '#f16871')
+      api.getReserveHistory(this.user.number).then((res) => {
+        this.reserves = res;
+        console.log(typeof this.reserves[0].reserve_time)
+      })
     },
     methods: {
-      tableRowClassName(row, index) {
-
-        if(row.isReturn.trim() == '否') return 'no-return'
-        return ''
+      giveBack: function (index) {
+        let item = this.reserves[index];
+        this.$confirm('确定归还图书:"' + item.name + '"', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api.giveBack(item.book_number).then((res) => {
+            this.reserves[index].isReturn = 1;
+            let newArr = this.reserves
+            this.reserves = newArr
+            this.$message({type: 'success', message: res.msg})
+          })
+        }).catch(() => {})
       }
     }
   }
@@ -48,7 +63,12 @@
   background-color: #EFF2F7
   #title
     margin: 20px
-    font-size: 2rem
+    font-size: 2.5rem
   #table
+    margin-top: 4rem
     margin-left: 5rem
+    .no-return
+      color: red
+    .return
+      margin-right: 1rem
 </style>

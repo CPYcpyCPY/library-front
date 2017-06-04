@@ -21,14 +21,9 @@
           el-form-item(label='购入时间')
             el-col(:span='11')
               el-date-picker(type='date', placeholder='选择购入日期', v-model='form.buy_time', style='width: 100%;')
-          div#upload
-            img(:src="img")
-            div.btn
-              el-button(type="primary", @click="uploadImg") 上传图片
-              el-button(type="warning", @click="uploadPdf") 上传PDF
+          uploader(:form="form")
           el-form-item
-            el-button(type='primary', @click='submit') 立即创建
-            el-button 取消
+            el-button#create(type='primary', @click='submit' v-loading.fullscreen.lock="loading") 立即创建
     el-dialog(title='更改图书信息', v-model="dialogVisible")
       el-form(:model='updateForm', label-width='80px')
         el-form-item(v-for="(val, key, index) in base",v-if="key != 'buy_time' && key != 'school'", :label="val", :key="index")
@@ -45,14 +40,17 @@
 
 </template>
 <script>
+  import uploader from './Uploader.vue'
   import api from '../../common/api.js'
   import admin from '../../common/api-admin.js'
   import tools from '../../common/tools.js'
+  import Uploader from './Uploader'
   export default {
-    name: 'manage',
+    components: {Uploader}, name: 'manage',
     data () {
       return {
         dialogVisible: false,
+        loading: false,
         img: '',
         base: {
           number: '图书编号',
@@ -74,13 +72,19 @@
     },
     methods: {
       submit() {
+        this.loading = true;
+        let d1 = new Date().getTime();
         admin.createBook(this.form).then((res) => {
-          this.$message({
-            type: res.data.err ? 'error' : 'success',
-            message: res.data.err ? res.data.err : res.data.msg
-          })
-          this.form.buy_time = tools.getStandardDate(this.form.buy_time)
-          this.freeBooks.push(this.form);
+          let d2 = new Date().getTime();
+          setTimeout(() => {
+            this.$message({
+              type: res.data.err ? 'error' : 'success',
+              message: res.data.err ? res.data.err : res.data.msg
+            })
+            this.form.buy_time = tools.getStandardDate(this.form.buy_time)
+            this.freeBooks.push(this.form);
+            this.loading = false;
+          }, d2 - d1 < 1200 ? 1200: 0)
         })
       },
       update(index) {
@@ -115,28 +119,6 @@
             this.freeBooks.splice(index, 1);
           })
         }).catch(() => {})
-      },
-      uploadImg() {
-        tools.upload('img', (result) => {
-          if (result.err) {
-            this.$message({type: 'error', message: '文件格式不正确!'})
-          } else {
-            this.$message({type: 'success', message: '上传图片成功!'})
-            this.img = result.url;
-            this.form.picture = result.picture;
-            this.form.file = result.file;
-          }
-        })
-      },
-      uploadPdf() {
-        tools.upload('pdf', (result) => {
-          if (result.err) {
-            this.$message({type: 'warning', message: '文件格式不正确!'})
-          } else {
-            this.$message({type: 'success', message: '上传pdf成功!'})
-            this.form.pdf = result.file;
-          }
-        })
       }
     },
     created() {
@@ -158,23 +140,7 @@
     background-color: #EFF2F7
     #table
       width: 500px
-    #upload
-      top: 5rem
-      right: 10rem
-      width: 20%
-      height: auto
-      position: absolute
-      img
-        display: block
-        margin: 0 auto 1rem
-        width: 100%
-        height: 20rem
-      .btn
-        text-align: center
-        button
-          width: 48%
-      #file
-        width: 50%
-        display: block
-        margin: 0 auto
+    #create
+      margin: 2rem 0 2rem
+      width: 80%
 </style>

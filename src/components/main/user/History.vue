@@ -33,7 +33,6 @@
     mounted() {
       api.getReserveHistory(this.user.number).then((res) => {
         this.reserves = res;
-        console.log(typeof this.reserves[0].reserve_time)
       })
     },
     methods: {

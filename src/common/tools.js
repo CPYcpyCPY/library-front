@@ -46,31 +46,40 @@ export default {
    *    file: 文件内容,
    *  }
    */
-  upload(fileType, cb) {
+  upload(fileType, multiple, cb) {
     let input = document.createElement('input')
     input.type = 'file'
+    if (multiple) input.multiple = true
     document.body.appendChild(input)
     input.click()
     input.onchange = (evt) => {
-      let file = evt.target.files[0] //只上传一张，所以取第一个
-      let type = file.type && file.type.split('/')[1].trim()
-      if (fileMap[fileType].indexOf(type) != -1) {
-        if (fileType == 'img') {  //如果是图片，则需要预览
-          let reader = new FileReader()
-          reader.onloadend = (e) => {
-            cb({
-              picture: file.name,  // xxx.jpg
-              url: e.target.result,
-              file: file
-            })
+      let files = evt.target.files
+      for (let i = 0; i < files.length; i++) {
+        let file = evt.target.files[i]
+        let type = file.type && file.type.split('/')[1].trim()
+        if (fileMap[fileType].indexOf(type) != -1) {
+          if (!multiple) {  //上传单个文件
+            if (fileType == 'img') {  //如果是图片，则需要预览
+              let reader = new FileReader()
+              reader.onloadend = (e) => {
+                cb({
+                  picture: file.name,  // xxx.jpg
+                  url: e.target.result,
+                  file: file
+                })
+              }
+              reader.readAsDataURL(file)
+            } else {
+              cb({file: file})
+              return
+            }
           }
-          reader.readAsDataURL(file)
         } else {
-          cb({file: file})
+          cb({err: true})
+          return
         }
-      } else {
-        cb({err: true})
       }
+      cb({files: files})
     }
     input.style.display = 'none'
   },
@@ -78,9 +87,16 @@ export default {
   // 传入Object，返回表单
   generateForm (data) {
     console.log(data)
+
+    window.testData = data
     let formData = new FormData()
     for (var key in data) {
-      formData.append(key, data[key])
+      if(data[key] instanceof FileList) { // 多文件上传，需要遍历
+        for(let i = 1; i <= data[key].length; i++)
+        formData.append('img' + i, data[key][i-1])
+      } else {
+        formData.append(key, data[key])
+      }
     }
     return formData
   },
@@ -96,7 +112,7 @@ export default {
 
   // 返回标准时间格式: yyyy-mm-dd
   getStandardDate (date) {
-    if (!(date instanceof Date)) date = new Date(date);
+    if (!(date instanceof Date)) date = new Date(date)
     var y = date.getFullYear(),
       m = date.getMonth() + 1,
       d = date.getDate()

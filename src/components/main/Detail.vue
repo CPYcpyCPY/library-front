@@ -5,6 +5,7 @@
         div.ui.fluid.image
           div.ui.red.ribbon.label(v-if="book.reserved == 1") 已预约
           img(v-if="book", :src="'/static/cover/' + book.picture")
+      img(v-for="img in imgs", :src="'/static/'+ book.number + '/' + img")
       div#info
         table#info-table(border="1")
           caption 图书信息
@@ -43,6 +44,7 @@ export default {
   data () {
     return {
       book: '',
+      imgs: []
     }
   },
   computed: {
@@ -58,7 +60,6 @@ export default {
       })
     },
     reserve () {
-      console.log(this.user);
       if(!this.user) {
         this.$notify({
           title: '警告',
@@ -86,6 +87,8 @@ export default {
     let number = this.$route.query.number;
     api.book(number).then((res) => {
       this.book = res;
+      res.urls = res.urls.substr(0, res.urls.length - 1)
+      this.imgs = res.urls.split('|');
     })
   }
 }

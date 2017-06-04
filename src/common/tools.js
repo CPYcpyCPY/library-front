@@ -27,7 +27,6 @@ export default {
     form.setAttribute('target', '')
     form.setAttribute('method', 'post')
     form.setAttribute('action', url)
-
     for (let key in data) {
       let input = document.createElement('input')
       input.setAttribute('name', key)

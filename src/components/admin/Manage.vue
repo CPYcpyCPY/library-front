@@ -141,6 +141,6 @@
     #table
       width: 500px
     #create
-      margin: 2rem 0 2rem
+      margin: 4rem 0 2rem
       width: 80%
 </style>

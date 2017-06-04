@@ -20,13 +20,19 @@
     },
     methods: {
       logout () {
-        api.logout(this.user.number).done(() => {
-          this.$message({
-            type: 'success',
-            message: '退出成功!'
+        this.$confirm('确定退出当前用户', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api.logout(this.user.number).done(() => {
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            })
+            this.user = null
           })
-          this.user = null
-        })
+        }).catch(()=>{})
       }
     },
     mounted() {

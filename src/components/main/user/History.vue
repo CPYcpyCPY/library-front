@@ -22,7 +22,6 @@
         },
         reserves: [],
         msg: '图书预定',
-        users: ''
       }
     },
     computed: {
@@ -31,7 +30,7 @@
       }
     },
     mounted() {
-      api.getReserveHistory(this.user.number).then((res) => {
+      api.getReserveHistory().then((res) => {
         this.reserves = res;
       })
     },

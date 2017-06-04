@@ -1,7 +1,9 @@
 <template lang="jade">
   div#user
     div.left
-      div.header 读者:{{user.name}}
+      div.header
+        i.el-icon-arrow-left(@click="$router.push('/main')")
+        span 读者:{{user.name}}
       el-menu.el-menu-vertical-demo(theme='dark' router)
         el-menu-item(index='/user/info')
           i.el-icon-menu
@@ -21,16 +23,15 @@ export default {
   name: 'user',
   data () {
     return {
+      user: '',
       text: '个人中心',
     }
   },
-  computed: {
-    user() {
-      return this.$store.state.user.user
-    }
-  },
-  created() {
-    if(!this.user) this.$router.push('/login')
+  beforeCreate() {
+    api.isLogin().done((res) => {
+      if(res.msg) this.user = res.user;
+      else this.$router.push('/login')
+    })
   }
 }
 </script>

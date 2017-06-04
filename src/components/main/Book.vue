@@ -2,18 +2,13 @@
   div#books
     div.book-row(v-for='book in books')
       div.book(v-for="b in book", @click='bookDetail(b.number)')
-        img(:src="'/static/cover/' + b.picture")
-        div#info1
-          div.book-name
-            i.el-icon-document
-            span {{b.name}}
-          div.book-author
-            i.el-icon-edit
-            span {{b.author}}
-        div#info2
-          div.book-type
-            i.el-icon-plus
-            span {{b.type}}
+        el-card(:body-style="{ padding: '0px' }")
+          img.image(:src="'/static/cover/' + b.picture")
+          div.info-box
+            span.name {{b.name}}
+            .bottom
+              span.author {{b.author}}
+              span.type {{b.type}}
 </template>
 
 <script>
@@ -44,8 +39,12 @@
   }
 </script>
 
-<style scoped lang="sass">
+<style lang="sass">
+  #app
+    height: auto !important
   #books
+    height: auto
+    padding-bottom: 2rem
     .book-row
       display: flex
       width: 80%
@@ -53,16 +52,23 @@
       .book
         width: 30%
         margin: 10px
-        border: 2px solid #c3c3c3
-        border-radius: 10px
         img
           width: 100%
           height: 350px
-          border-radius: 10px
-      [id*='info']
-        display: flex
-        [class*='book']
-          justify-content: center
-          display: flex
-          flex: 1
+        .info-box
+          padding: 0 1rem 0.5rem 1rem
+          .name
+            font-size: 1.3rem
+          .bottom
+            display: flex
+            .author
+              flex: 2
+              font-size: 1.2rem
+              color: #0d71bb
+            .type
+              display: flex
+              font-size: 1.1rem
+              justify-content: flex-end
+              flex: 1
+              color: #00B5AD
 </style>

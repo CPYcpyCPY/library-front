@@ -59,15 +59,11 @@ export default {
       bookNumber: bookNumber
     })
   },
-  getReserveHistory (number) {
-    return request('get', prefix + '/getReserveHistory', {
-      number: number
-    })
+  getReserveHistory () {
+    return request('get', prefix + '/getReserveHistory')
   },
   giveBack (number) {
-    return request('post', prefix + '/giveBack', {
-      number: number
-    })
+    return request('post', prefix + '/giveBack')
   },
   getProblem (number) {
     return request('get', prefix + '/getProblems', {
@@ -80,5 +76,5 @@ export default {
       result: result
     })
   },
-  download: prefix + '/file'
+  download: prefix + '/pdf'
 }

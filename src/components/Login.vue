@@ -2,9 +2,10 @@
   div#canvas-wrapper
     div.loginBox
       div.img
-        img.image(src="/static/logo.jpg")
+        img.image(src="/resource/logo.jpg")
       el-tabs(v-model='type', @tab-click='handleClick')
         el-tab-pane(label='登录', name='signIn') 登录
+        el-tab-pane(label='登录(管理员)', name='signInAdmin') 登录(管理员)
         el-tab-pane(label='注册', name='signUp') 注册
       el-form(:label-position='labelPosition', label-width='80px', :model='formData')
         el-form-item(label='编号')
@@ -15,11 +16,12 @@
           el-input.input(v-model='formData.repeat'  type='password')
       div.err {{err}}
       el-button.submit(type='primary', @click="submit")
-        | {{type == 'signIn' ? '登录' : '注册'}}
+        | {{type == 'signUp' ?'注册': '登录'}}
 </template>
 <script>
   import Particle from 'zhihu-particle'
   import api from '../common/api'
+  import apiAdmin from '../common/api-admin'
   export default {
     name: 'login',
     data () {
@@ -60,6 +62,13 @@
             if(res.err) this.err = res.err;
             else this.$router.push({
               path: '/'
+            });
+          })
+        } else if(this.type == 'signInAdmin') {
+          apiAdmin.signIn(number, password).then((res) => {
+            if(res.err) this.err = res.err;
+            else this.$router.push({
+              path: '/admin/manage'
             });
           })
         } else if (password !== this.formData.repeat) {

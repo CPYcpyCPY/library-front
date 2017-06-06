@@ -2,9 +2,9 @@
   div#auth
     h2#title 用户列表
     template
-      el-table(v-if="users", :data='users', border='', style='width: 86%')
-        el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", width="180", :key="key", sortable)
-        el-table-column(label='操作', width="180")
+      el-table(v-if="users", :data='users', border='', style='width: 95%')
+        el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", :key="key", sortable)
+        el-table-column(label='操作')
           template(scope='scope')
             el-button.btn-black(size='small', type='warning', @click='addToBlackList(scope.$index)') 拉入黑名单
             el-button(size='small', type='danger', @click='deleteUser(scope.$index)') 删除
@@ -69,8 +69,11 @@
     }
   }
 </script>
-<style scoped lang="sass">
+<style lang="sass">
+  #app
+    height: 100%
   #auth
+    padding-bottom: 2rem
     flex: 1
     margin-left: 12rem
     padding-left: 1rem

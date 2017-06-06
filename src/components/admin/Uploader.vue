@@ -54,6 +54,7 @@
 </script>
 <style scoped lang="sass">
   #upload
+    z-index: 999
     top: 5rem
     right: 10rem
     width: 25%

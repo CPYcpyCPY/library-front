@@ -4,8 +4,8 @@
       div#preview
         el-carousel(:interval='4000', type='card', height='500px')
           el-carousel-item(v-for='(img,index) in imgs', :key='index')
-            img(v-if="index == 0", :src="'/static/cover/' + img")
-            img(v-else :src="'/static/'+ book.number + '/' + img")
+            img(v-if="index == 0", :src="'/resource/cover/' + img")
+            img(v-else :src="'/resource/'+ book.number + '/' + img")
       div#info
         el-card.box-card#info-card
           .text.item(v-for='(val, key) in base', :key='key')
@@ -33,7 +33,7 @@ export default {
         name: '书名',
         publisher: '出版者',
         type: '类型',
-        reserved: '是否借阅',
+        reserved: '是否被借阅',
       }
     }
   },
@@ -55,6 +55,12 @@ export default {
           message: '请先登录！',
           type: 'warning'
         });
+      } else if(this.user.message) {
+        this.$notify({
+          title: '警告',
+          message: '已被拉入黑名单，请前往个人中心完成问题',
+          type: 'warning'
+        })
       } else {
         this.$confirm('确定预定图书:"' + this.book.name + '"', '提示', {
           confirmButtonText: '确定',
@@ -92,7 +98,9 @@ export default {
   background-color: #d3dce6
 .el-carousel--card
   width: 100%
+
 #detail
+  padding-bottom: 5rem
   .reserved
     color: red !important
     font-size: 1.3rem

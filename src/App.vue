@@ -16,10 +16,10 @@ export default {
 </script>
 
 <style lang="sass">
-body, html, #app
+body, html
   height: 100%
   margin: 0
-
+  font-family: cursive
 .fade-enter-active, .fade-leave-active
   transition: opacity .5s ease
 

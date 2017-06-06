@@ -1,6 +1,6 @@
 <template lang="jade">
   div#home
-    Library_Head(:user="user", :logout="logout")
+    Library_Head(:user="user")
     transition(name="fade" mode="out-in")
       router-view
 </template>
@@ -18,23 +18,6 @@
         user: null
       }
     },
-    methods: {
-      logout () {
-        this.$confirm('确定退出当前用户', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          api.logout(this.user.number).done(() => {
-            this.$message({
-              type: 'success',
-              message: '退出成功!'
-            })
-            this.user = null
-          })
-        }).catch(()=>{})
-      }
-    },
     mounted() {
       this.$store.dispatch('GET_USER').then(() => {
         let user = this.$store.state.user.user
@@ -48,5 +31,4 @@
 <style scoped lang="sass">
   h1, h2
     font-weight: normal
-
 </style>

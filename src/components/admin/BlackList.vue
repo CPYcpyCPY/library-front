@@ -1,10 +1,10 @@
 <template lang="jade">
-  div#auth
+  div#balcklist
     h2#title 用户列表
     template
-      el-table(v-if="users", :data='users', border='', style='width: 86%')
-        el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", width="180", :key="key")
-        el-table-column(label='操作', width="180")
+      el-table(v-if="users", :data='users', border='', style='width: 95%')
+        el-table-column(v-for="(val, key, index) in base", :prop="key", :label="val", :key="key")
+        el-table-column(label='操作')
           template(scope='scope')
             el-button(size='small', type='success', @click='handleDelete(scope.$index)') 解除黑名单
 </template>
@@ -48,11 +48,12 @@
   }
 </script>
 <style scoped lang="sass">
-  #auth
+  #balcklist
     flex: 1
     margin-left: 12rem
     padding-left: 1rem
     background-color: #EFF2F7
+    padding-bottom: 2rem
     #title
       margin: 20px
       font-size: 2rem

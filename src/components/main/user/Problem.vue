@@ -1,7 +1,7 @@
 <template lang="jade">
   div#problem
-    h2#title {{inBlackList ? '暂无题目': '答题列表(管理员提示:' + message + ')'}}
-    div#form(v-if="!inBlackList && problems")
+    h2#title {{!inBlackList ? '暂无题目': '答题列表(管理员提示:' + message + ')'}}
+    div#form(v-if="inBlackList && problems")
       form.pro-item(v-for="(p,i) in problems")
         label.title 题目{{p.number}}: {{p.title}}
         div.choose
@@ -29,8 +29,13 @@
     },
     mounted() {
       api.getProblem().then((res) => {
-        this.problems = res.problems;
-        this.message = res.message;
+        if(res.msg) {
+          this.inBlackList = false;
+        } else {
+          this.inBlackList = true;
+          this.problems = res.problems;
+          this.message = res.message;
+        }
       })
     },
     methods: {

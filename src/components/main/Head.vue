@@ -1,12 +1,11 @@
 <template lang="jade">
   div#head
-    img(src='/static/logo.jpg', @click="admin")
+    img(src='/resource/logo.jpg', @click="admin")
     span#title {{title}}
     span#login(@click="login" v-if="!user") 登录
     div#info
-      span#name(v-if="user", @click="userCenter") {{user.name}}
-      el-button#logout(type="danger", v-if="user", @click="logout") 退出
-
+      span#name(v-if="user", @click="userCenter") {{user.name + '(个人中心)'}}
+      i.icon.el-icon-arrow-right(v-if="user")
 </template>
 <script>
   import api from '../../common/api'
@@ -55,12 +54,12 @@
     position: absolute
     right: 2rem
     line-height: 5rem
+    color: #6970e7
     #name
       margin-right: 1rem
       font-size: 2rem
-      color: rgb(58, 59, 185)
-    #logout
-      transform: translateY(-10%)
+    .icon
+      font-size: 2rem
   img
     width: 5rem
     height: 5rem

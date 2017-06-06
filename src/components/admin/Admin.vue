@@ -64,7 +64,6 @@
 <style scoped lang="sass">
 #admin
   display: flex
-  height: auto
   width: 100%
   .left
     width: 12rem
@@ -86,16 +85,15 @@
       bottom: 60px
       width: 50px
       height: 50px
-      border: 2px solid white
       border-radius: 50px
       text-align: center
       left: 50%
       margin-left: -25px
       img
-        border-radius: 30px
+        border-radius: 25px
         margin-top: 2px
-        width: 40px
-        height: 40px
+        width: 50px
+        height: 50px
     .name
       position: absolute
       width: 100%

@@ -3,14 +3,14 @@
     el-tabs(type='border-card')
       el-tab-pane(label='空闲图书')
         el-table#table(v-if="freeBooks", :data='freeBooks', stripe='', style='margin: 0 auto; width: 95%')
-          el-table-column(v-for="(val, key) in base", :prop="key", :label="val", width='150', :key="key")
+          el-table-column(v-for="(val, key) in base", :prop="key", :label="val", :key="key")
           el-table-column(label='操作', width="180")
             template(scope='scope')
               el-button(size='small', type='info', @click="update(scope.$index)") 编辑
               el-button(size='small', type='danger', @click='deleteBook(scope.$index)') 删除
       el-tab-pane(label='已借阅图书')
-        el-table(v-if="orderBooks", :data='orderBooks', stripe='', style='margin: 0 auto; width: 85%')
-          el-table-column(v-for="(val, key) in base", :prop="key", :label="val", width='150', :key="key")
+        el-table(v-if="orderBooks", :data='orderBooks', stripe='', style='margin: 0 auto; width: 95%')
+          el-table-column(v-for="(val, key) in base", :prop="key", :label="val", :key="key")
       el-tab-pane(label='添加图书')
         el-form(ref='form', :model='form', label-width='80px' style="padding-left: 100px")
           el-form-item(v-for="(val, key, index) in base",v-if="key != 'buy_time' && key != 'school'", :label="val", :key="index")

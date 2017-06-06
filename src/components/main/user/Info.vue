@@ -50,13 +50,14 @@
     }
   }
 </script>
-<style scoped lang="sass">
+<style lang="sass">
+#app
+  height: 100% !important
 #info
   flex: 1
   padding-left: 1rem
   margin-left: 12rem
   position: relative
-  background-color: #EFF2F7
   #title
     margin: 20px
     font-size: 2.5rem
@@ -71,7 +72,6 @@
       display: block
       margin: 0 auto
       width: 90%
-  background-color: #EFF2F7
   #title
     margin: 20px
     font-size: 2rem

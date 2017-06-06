@@ -65,10 +65,8 @@ export default {
   giveBack (number) {
     return request('post', prefix + '/giveBack')
   },
-  getProblem (number) {
-    return request('get', prefix + '/getProblems', {
-      number: number
-    })
+  getProblem () {
+    return request('get', prefix + '/getProblems')
   },
   submitProblems (number, result) {
     return request('get', prefix + '/submitProblems', {
